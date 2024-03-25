@@ -6,3 +6,5 @@ libasmTester
 42libasm_tester
 ok*
 test*
+*.c
+libasm.a
