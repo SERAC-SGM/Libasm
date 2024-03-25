@@ -1,0 +1,8 @@
+helloWorld.s
+*.out
+*.o
+*.txt
+libasmTester
+42libasm_tester
+ok*
+test*
