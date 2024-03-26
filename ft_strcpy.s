@@ -16,5 +16,6 @@ ft_strcpy:
 	jmp	.end
 	
 .end:
+	mov	byte [rdi + rcx], 0
 	mov	rax, rdi
 	ret

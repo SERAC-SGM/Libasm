@@ -16,7 +16,7 @@ ft_write:
 .errno:
 	neg	rax	; get absolute value
 	push	rax
-	call	__errno_location
+	call	__errno_location	; returns a pointer to the errno variable
 	mov	r8, rax
 	pop	rax
 	mov	[r8], rax
