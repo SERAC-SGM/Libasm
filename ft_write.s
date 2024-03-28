@@ -17,7 +17,7 @@ ft_write:
 	jl	.errno
 	ret
 .buffer_null:
-	mov	rax, -22
+	mov	rax, -22	; EINVAL
 	jmp	.errno
 .errno:
 	neg	rax	; get absolute value

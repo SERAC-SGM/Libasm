@@ -9,4 +9,4 @@ ft_strlen:
 	inc	rax
 	jmp	.loop
 .done:
-	ret	 
+	ret
