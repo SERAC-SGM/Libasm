@@ -2,7 +2,8 @@ section	.text
 	global	ft_strcpy
 
 ft_strcpy:
-	; Input : rdi -> destination string, rsi -> source string
+	; rdi : destination string
+	; rsi : source string
 	xor	rcx, rcx
 
 .copy_loop:
