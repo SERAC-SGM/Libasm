@@ -7,12 +7,18 @@ ft_write:
 	; rsi : buffer
 	; rdx : bytes read
 
+	cmp	rsi, 0
+	je	.buffer_null
+
 	; system call number for write
 	mov	rax, 1
 	syscall
 	cmp	rax, 0
 	jl	.errno
 	ret
+.buffer_null:
+	mov	rax, -22
+	jmp	.errno
 .errno:
 	neg	rax	; get absolute value
 	push	rax
