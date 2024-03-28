@@ -42,31 +42,30 @@ ft_atoi_base:
     jmp .check_str
 .check_str:
     xor rcx, rcx    ; counter
-    xor rax, rax    ; result
     mov rdx, 1      ; sign
     jmp .check_space
 .check_space:
     cmp byte [rdi + rcx], 0
     je .end
     cmp byte [rdi + rcx], 32
-    je .inc_counter
+    je .inc_counter_space
     jne end_check_space
     cmp byte [rdi + rcx], 12
-    je .inc_counter
+    je .inc_counter_space
     jne end_check_space
     cmp byte [rdi + rcx], 10
-    je .inc_counter
+    je .inc_counter_space
     jne end_check_space
     cmp byte [rdi + rcx], 13
-    je .inc_counter
+    je .inc_counter_space
     jne end_check_space
     cmp byte [rdi + rcx], 9
-    je .inc_counter
+    je .inc_counter_space
     jne end_check_space
     cmp byte [rdi + rcx], 11
-    je .inc_counter
+    je .inc_counter_space
     jne end_check_space
-.inc_counter:
+.inc_counter_space:
     inc rcx
     jmp .check_space
 .end_check_space:
@@ -76,10 +75,23 @@ ft_atoi_base:
     je .end
     cmp byte [rdi + rcx], 45    ; '-'
     je .set_sign
+    jne .end_check_sign
+    cmp byte [rdi + rcx], 43    ; '+'
+    je .inc_counter_sign
+    jne .end_check_sign
 .set_sign:
     neg rdx    ; sign *= -1
+    inc rcx
     jmp .check_sign
-; .end_check_str:
+.inc_counter_sign:
+    inc rcx
+    jmp .check_sign
+.end_check_sign:
+    jmp .convert
+.convert:
+    xor rax, rax    ; result
+    
+
 .error:
     xor rax, rax
     ret
