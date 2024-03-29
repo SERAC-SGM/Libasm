@@ -6,38 +6,40 @@ ft_atoi_base:
     ; rdi : str
     ; rsi : base
 
-    push    rdi
-    mov rsi, rdi
+    push    rsi
+    mov rdi, rsi
     call    ft_strlen   ; rax = strlen(base)
-    pop rdi
+    pop rsi
     xor rcx, rcx        ; outer counter
     cmp rax, 2
-    jl  .error_base
+    jl  .end
     mov r8, rax         ; r8 = strlen(base)
     jmp .check_base
 .check_base:
     cmp byte [rsi + rcx], 0     ; base[i] == 0
     je .end_check_base
     cmp byte [rsi + rcx], 32    ; base[i] <= ' '
-    jle .error
+    jle .end
     cmp byte [rsi + rcx], 43    ; base[i] == '+'
-    je .error
+    je .end
     cmp byte [rsi + rcx], 45    ; base[i] == '-'
-    je .error
+    je .end
     cmp byte [rsi + rcx], 127   ; base[i] >= 127
-    jge .error
+    jge .end
     mov rdx, rcx    ; inner counter
     inc rdx         ; rdx = rcx + 1
     jmp .check_dup  ; check if base[i] is duplicated
-    inc rcx
-    jmp .check_base
 .check_dup:
-    cmp byte [rsi + rdx], 0             ; base[i] == 0
-    je .check_base
-    cmp byte [rsi + rcx], [rsi + rdx]   ; base[i] == base[j]
-    je .error
+    cmp byte [rsi + rdx], 0     ; base[i] == 0
+    je .end_check_dup
+    mov al, byte [rsi + rcx]
+    cmp al, byte [rsi + rdx]    ; base[i] == base[j]
+    je .end
     inc rdx
     jmp .check_dup
+.end_check_dup:
+    inc rcx
+    jmp .check_base
 .end_check_base:
     jmp .check_str
 .check_str:
@@ -49,27 +51,24 @@ ft_atoi_base:
     je .end
     cmp byte [rdi + rcx], 32
     je .inc_counter_space
-    jne end_check_space
     cmp byte [rdi + rcx], 12
     je .inc_counter_space
-    jne end_check_space
     cmp byte [rdi + rcx], 10
     je .inc_counter_space
-    jne end_check_space
     cmp byte [rdi + rcx], 13
     je .inc_counter_space
-    jne end_check_space
     cmp byte [rdi + rcx], 9
     je .inc_counter_space
-    jne end_check_space
     cmp byte [rdi + rcx], 11
     je .inc_counter_space
-    jne end_check_space
+    jne .check_sign
 .inc_counter_space:
     inc rcx
     jmp .check_space
-.end_check_space:
-    jmp .check_sign
+; .end_check_space:
+;     ; mov eax, [rdi]
+;     ; ret
+;     jmp .check_sign
 .check_sign:
     cmp byte [rdi + rcx], 0
     je .end
@@ -90,8 +89,7 @@ ft_atoi_base:
     jmp .convert
 .convert:
     xor rax, rax    ; result
-    
 
-.error:
+.end:
     xor rax, rax
     ret
